@@ -1,0 +1,17 @@
+@echo off
+REM Parallel commands - distribute across 3 slaves
+echo Command 1 - Slave should handle this
+echo Processing parallel task 1...
+ping -n 2 127.0.0.1 > nul
+
+echo Command 2 - Another parallel task
+echo Processing parallel task 2...
+dir /S > nul
+
+echo Command 3 - Third parallel task
+echo Processing parallel task 3...
+ipconfig | findstr "IPv4"
+
+echo Command 4 - Fourth task (will queue if all slaves busy)
+echo Processing task 4...
+echo Parallel test complete

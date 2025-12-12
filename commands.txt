@@ -1,0 +1,10 @@
+echo "Command 1: Listing files"
+ls -la
+echo "Command 2: Creating test file"
+echo "Test content" > test.txt
+echo "Command 3: Displaying file"
+cat test.txt
+echo "Command 4: Date and time"
+date
+echo "Command 5: System info"
+uname -a

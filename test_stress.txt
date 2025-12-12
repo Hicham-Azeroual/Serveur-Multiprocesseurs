@@ -1,0 +1,6 @@
+@echo off
+REM Stress test with many commands
+for /L %%i in (1,1,10) do (
+    echo Command %%i: Processing...
+    echo Processing batch command %%i
+)

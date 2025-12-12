@@ -1,0 +1,16 @@
+echo Test Command 1: Print Hello World
+echo Hello from test 1
+echo.
+echo Test Command 2: List directory
+dir
+echo.
+echo Test Command 3: Display date and time
+date /T
+time /T
+echo.
+echo Test Command 4: Create a test file
+echo This is a test file created by command execution > test_output.txt
+type test_output.txt
+echo.
+echo Test Command 5: System information
+systeminfo | findstr /B "OS"
