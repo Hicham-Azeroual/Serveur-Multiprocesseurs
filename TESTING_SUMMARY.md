@@ -111,9 +111,4 @@ All components are working correctly and the system is ready for production test
 
 
 
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/Hicham-Azeroual/Serveur-Multiprocesseurs.git
-git push -u origin main
+

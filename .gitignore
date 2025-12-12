@@ -1,0 +1,44 @@
+# Compiled executables
+*.exe
+*.o
+*.out
+
+# Object files
+*.obj
+
+# Dynamic libraries
+*.dll
+*.so
+*.dylib
+
+# Static libraries
+*.a
+*.lib
+
+# Executables in root
+serveur_esclave
+serveur_maitre
+client
+
+# Windows-specific
+*.exe.stackdump
+Thumbs.db
+.DS_Store
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# Test output files (optional - uncomment if you want to version control them)
+# test_output.txt
+# *.log
