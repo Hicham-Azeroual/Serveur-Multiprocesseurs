@@ -1,6 +1,7 @@
 # Serveur Multiprocesseurs - Système de Distribution de Commandes
 
 ## 📋 Table des Matières
+
 1. [Vue d'ensemble](#vue-densemble)
 2. [Architecture](#architecture)
 3. [Composants](#composants)
@@ -21,6 +22,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 **Cas d'usage:** Un client soumet un fichier contenant plusieurs commandes shell. Le serveur maître les distribue dynamiquement aux serveurs esclaves disponibles pour une exécution en parallèle.
 
 ### Caractéristiques principales:
+
 - ✅ **Parallélisme naturel**: Jusqu'à 3 commandes exécutées simultanément
 - ✅ **Transparence**: Le client voit un seul serveur
 - ✅ **Scalabilité**: Facile d'ajouter/retirer des esclaves
@@ -63,8 +65,9 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 ## Composants
 
 ### 1. **Serveur Maître** (`serveur_maitre.c`)
+
 - **Port**: 9999 (TCP)
-- **Rôle**: 
+- **Rôle**:
   - Écoute les connexions des clients
   - Charge la configuration des esclaves depuis `slaves.conf`
   - Lit les fichiers de commandes envoyés par les clients
@@ -72,6 +75,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
   - Affiche les résultats en console
 
 **Fonctionnement:**
+
 ```
 1. Démarre et charge slaves.conf
 2. Écoute sur port 9999
@@ -86,6 +90,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 ```
 
 ### 2. **Serveur Esclave** (`serveur_esclave.c`)
+
 - **Port**: Configurable (10001, 10002, 10003)
 - **Protocole**: UDP (datagrammes)
 - **Rôle**:
@@ -96,6 +101,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
   - Revient à l'écoute
 
 **Fonctionnement:**
+
 ```
 1. Démarre sur port spécifié (argument)
 2. Boucle infinie:
@@ -108,6 +114,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 ```
 
 ### 3. **Client** (`client.c`)
+
 - **Rôle**:
   - Se connecte au maître via TCP
   - Envoie le nom du fichier de commandes
@@ -116,6 +123,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
   - Affiche le statut
 
 **Fonctionnement:**
+
 ```
 1. Ouvre le fichier de commandes
 2. Se connecte au maître (127.0.0.1:9999)
@@ -131,6 +139,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 ## Prérequis
 
 ### Windows
+
 - **Compilateur**: MinGW GCC (avec support Winsock)
   - Télécharger: https://www.mingw-w64.org/
   - Ou via installer: https://winlibs.com/
@@ -138,6 +147,7 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 - **Port TCP 9999**: Doit être disponible
 
 ### Linux/macOS
+
 - **Compilateur**: GCC standard
 - **Headers POSIX**: `sys/socket.h`, `netinet/in.h`, etc.
 - **Port TCP 9999**: Doit être disponible
@@ -149,12 +159,14 @@ Ce projet implémente un **système distribué de traitement de commandes shell*
 ### Windows (PowerShell)
 
 #### Option 1: Compilation Automatique (Batch)
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 .\compile.bat
 ```
 
 #### Option 2: Compilation Manuelle
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 gcc -o serveur_esclave.exe serveur_esclave.c -lws2_32
@@ -180,22 +192,27 @@ gcc -o client client.c
 #### 1️⃣ Démarrer les Serveurs Esclaves
 
 **Terminal 1** (Slave 1):
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 .\serveur_esclave.exe 10001
 ```
+
 Résultat:
+
 ```
 [Slave Server] Esclave lancé sur le port 10001 (PID=xxxx)
 ```
 
 **Terminal 2** (Slave 2):
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 .\serveur_esclave.exe 10002
 ```
 
 **Terminal 3** (Slave 3):
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 .\serveur_esclave.exe 10003
@@ -204,11 +221,14 @@ cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 #### 2️⃣ Démarrer le Serveur Maître
 
 **Terminal 4** (Master):
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 .\serveur_maitre.exe slaves.conf
 ```
+
 Résultat:
+
 ```
 [Master Server] Maître lancé sur le port 9999 avec 3 esclaves (PID=xxxx)
 ```
@@ -216,11 +236,14 @@ Résultat:
 #### 3️⃣ Exécuter le Client
 
 **Terminal 5** (Client):
+
 ```powershell
 cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 .\client.exe test_parallel.txt
 ```
+
 Résultat:
+
 ```
 [Client] Connexion au serveur maître 127.0.0.1:9999...
 [Client] Connecté au serveur maître
@@ -256,7 +279,9 @@ Résultat:
 Trois fichiers de test sont fournis pour vérifier le système:
 
 ### 1. **test_basic.txt** - Test Basique
+
 Commandes simples pour vérifier le fonctionnement:
+
 ```bash
 echo Test Command 1: Print Hello World
 dir
@@ -265,6 +290,7 @@ systeminfo | findstr "OS"
 ```
 
 **Exécution:**
+
 ```powershell
 .\client.exe test_basic.txt
 ```
@@ -274,7 +300,9 @@ systeminfo | findstr "OS"
 ---
 
 ### 2. **test_parallel.txt** - Test de Parallélisme
+
 Teste la distribution parallèle avec 4 commandes:
+
 ```bash
 echo Command 1 - Slave should handle this
 ping -n 2 127.0.0.1
@@ -283,11 +311,13 @@ dir /S
 ```
 
 **Exécution:**
+
 ```powershell
 .\client.exe test_parallel.txt
 ```
 
-**Résultat attendu:** 
+**Résultat attendu:**
+
 - Esclave 1 traite la commande 1
 - Esclave 2 traite la commande 2
 - Esclave 3 traite la commande 3
@@ -296,7 +326,9 @@ dir /S
 ---
 
 ### 3. **test_stress.txt** - Test de Charge
+
 10 commandes pour tester la capacité:
+
 ```bash
 for /L %%i in (1,1,10) do (
     echo Command %%i: Processing...
@@ -304,6 +336,7 @@ for /L %%i in (1,1,10) do (
 ```
 
 **Exécution:**
+
 ```powershell
 .\client.exe test_stress.txt
 ```
@@ -315,6 +348,7 @@ for /L %%i in (1,1,10) do (
 ## Structure des Données
 
 ### CommandRequest (Maître → Esclave via UDP)
+
 ```c
 typedef struct {
     char command[1024];      // Commande shell à exécuter
@@ -324,6 +358,7 @@ typedef struct {
 ```
 
 **Exemple:**
+
 ```
 command: "echo Hello World"
 client_addr: "127.0.0.1"
@@ -331,6 +366,7 @@ client_port: 54321
 ```
 
 ### CommandResult (Esclave → Maître via UDP)
+
 ```c
 typedef struct {
     char command[1024];      // Commande exécutée
@@ -340,6 +376,7 @@ typedef struct {
 ```
 
 **Exemple:**
+
 ```
 command: "echo Hello World"
 return_code: 0
@@ -372,6 +409,7 @@ Temps  │ Esclave 1      │ Esclave 2      │ Esclave 3      │ Maître
 ### Messages Affichés
 
 **Fenêtre Master:**
+
 ```
 [Master Server] Maître lancé sur le port 9999 avec 3 esclaves (PID=5432)
 [Master Server] Nouvelle connexion client: 127.0.0.1:54321
@@ -388,6 +426,7 @@ Temps  │ Esclave 1      │ Esclave 2      │ Esclave 3      │ Maître
 ```
 
 **Fenêtre Slave 1:**
+
 ```
 [Slave Server] Esclave lancé sur le port 10001 (PID=6543)
 [Slave Server] Reçu commande: echo Command 1 - Slave should handle this
@@ -403,7 +442,9 @@ Command 1 - Slave should handle this
 ## Configuration
 
 ### slaves.conf
+
 Fichier contenant la liste des serveurs esclaves:
+
 ```
 localhost 10001
 localhost 10002
@@ -413,6 +454,7 @@ localhost 10003
 **Format:** `hostname port` (une ligne par esclave)
 
 **Modification:** Pour ajouter un esclave:
+
 1. Ajouter une ligne: `hostname port`
 2. Relancer le maître
 3. Lancer le nouvel esclave sur le port spécifié
@@ -422,9 +464,11 @@ localhost 10003
 ## Troubleshooting
 
 ### ❌ Erreur: "Port already in use"
+
 **Cause:** Un serveur est déjà en cours d'exécution sur ce port
 
 **Solution:**
+
 ```powershell
 # Tuer tous les processus serveur
 taskkill /F /IM serveur_esclave.exe
@@ -439,9 +483,11 @@ Start-Sleep -Seconds 5
 ---
 
 ### ❌ Erreur: "Cannot open config file: slaves.conf"
+
 **Cause:** Le fichier `slaves.conf` n'existe pas ou n'est pas au bon endroit
 
 **Solution:**
+
 ```powershell
 # Vérifier le fichier existe
 Test-Path slaves.conf
@@ -457,9 +503,11 @@ cd "C:\Users\EliteBook 840 G7\Desktop\tp"
 ---
 
 ### ❌ Erreur: "Connection refused" (Client)
+
 **Cause:** Le serveur maître n'est pas en cours d'exécution
 
 **Solution:**
+
 ```powershell
 # Vérifier les processus en cours
 Get-Process | grep serveur_maitre
@@ -471,9 +519,11 @@ Get-Process | grep serveur_maitre
 ---
 
 ### ❌ Pas de sortie visible
+
 **Cause:** Les serveurs ne montrent pas de messages
 
 **Solutions:**
+
 1. Vérifier que les fenêtres des serveurs sont encore ouvertes
 2. Vérifier la syntaxe des commandes dans le fichier de test
 3. Vérifier que `localhost` résout bien vers `127.0.0.1`
@@ -486,9 +536,11 @@ Get-Process | grep serveur_maitre
 ---
 
 ### ❌ Erreur de compilation "undefined reference to 'inet_ntoa'"
+
 **Cause:** MinGW n'a pas les bonnes bibliothèques Winsock
 
 **Solution:**
+
 ```powershell
 # Vérifier MinGW est installé correctement
 gcc --version
@@ -546,16 +598,16 @@ tp/
 
 ## Résumé Technique
 
-| Aspect | Détail |
-|--------|--------|
-| **Protocole Client-Maître** | TCP sur port 9999 |
-| **Protocole Maître-Esclave** | UDP sur ports 10001-10003 |
-| **Langage** | C ANSI (C99) |
-| **Systèmes supportés** | Windows (Winsock), Linux/macOS (POSIX) |
-| **Nombre esclaves max** | 10 (configurable) |
-| **Taille max commande** | 1024 caractères |
-| **Taille max résultat** | 256 caractères |
-| **Parallélisme** | Limité par nombre d'esclaves |
+| Aspect                       | Détail                                 |
+| ---------------------------- | -------------------------------------- |
+| **Protocole Client-Maître**  | TCP sur port 9999                      |
+| **Protocole Maître-Esclave** | UDP sur ports 10001-10003              |
+| **Langage**                  | C ANSI (C99)                           |
+| **Systèmes supportés**       | Windows (Winsock), Linux/macOS (POSIX) |
+| **Nombre esclaves max**      | 10 (configurable)                      |
+| **Taille max commande**      | 1024 caractères                        |
+| **Taille max résultat**      | 256 caractères                         |
+| **Parallélisme**             | Limité par nombre d'esclaves           |
 
 ---
 
@@ -574,6 +626,7 @@ Pour toute question ou problème:
 ## Conclusion
 
 Ce système démontre les concepts clés de:
+
 - ✅ **Programmation réseau** (sockets TCP/UDP)
 - ✅ **Programmation distribuée** (maître-esclaves)
 - ✅ **Parallélisme** (exécution simultanée)
